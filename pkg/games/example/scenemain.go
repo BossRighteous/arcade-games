@@ -4,8 +4,6 @@ import (
 	"fmt"
 
 	"github.com/BossRighteous/arcade-games/pkg/arcadegame"
-	"github.com/BossRighteous/arcade-games/pkg/arcadegame/nodes"
-	"github.com/BossRighteous/arcade-games/pkg/arcadegame/uniqueid"
 	"github.com/BossRighteous/arcade-games/pkg/games/example/bgnode"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -13,13 +11,13 @@ import (
 
 type SceneMain struct {
 	r    arcadegame.GameRoot
-	nMap map[uniqueid.UID]nodes.Node
+	nMap map[arcadegame.UID]arcadegame.Node
 	f    uint64
 }
 
 func (s *SceneMain) Init(r arcadegame.GameRoot) {
 	s.r = r
-	s.nMap = make(map[uniqueid.UID]nodes.Node, 100)
+	s.nMap = make(map[arcadegame.UID]arcadegame.Node, 100)
 	s.f = 0
 }
 

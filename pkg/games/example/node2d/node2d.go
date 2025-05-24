@@ -7,7 +7,6 @@ import (
 	"math"
 
 	"github.com/BossRighteous/arcade-games/pkg/arcadegame"
-	"github.com/BossRighteous/arcade-games/pkg/arcadegame/nodes"
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
@@ -26,7 +25,7 @@ type Node2DProps struct {
 	SpriteOffsetY int
 }
 
-var Node2DDrawFunc = func(n nodes.Node, s *ebiten.Image) {
+var Node2DDrawFunc = func(n arcadegame.Node, s *ebiten.Image) {
 	p, ok := n.Props().(*Node2DProps)
 	if !ok || !p.IsActive || !p.IsVisible {
 		return
@@ -36,8 +35,6 @@ var Node2DDrawFunc = func(n nodes.Node, s *ebiten.Image) {
 		fmt.Println(err)
 		return
 	}
-
-	fmt.Println()
 
 	tx := math.Floor(p.XPos + float64(p.SpriteOffsetX))
 	ty := math.Floor(p.YPos + float64(p.SpriteOffsetY))

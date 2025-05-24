@@ -1,4 +1,4 @@
-package uniqueid
+package arcadegame
 
 type UID int
 

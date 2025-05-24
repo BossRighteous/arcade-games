@@ -4,12 +4,11 @@ import (
 	"math/rand/v2"
 
 	"github.com/BossRighteous/arcade-games/pkg/arcadegame"
-	"github.com/BossRighteous/arcade-games/pkg/arcadegame/nodes"
 	"github.com/BossRighteous/arcade-games/pkg/games/example/node2d"
 )
 
 var (
-	InitFunc = func(n nodes.Node) {
+	InitFunc = func(n arcadegame.Node) {
 		p, ok := n.Props().(*node2d.Node2DProps)
 		if !ok || !p.IsActive {
 			return
@@ -20,7 +19,7 @@ var (
 		p.XVel = (rand.Float64() * 3) - 1.5
 		p.YVel = (rand.Float64() * 3) - 1.5
 	}
-	UpdateFunc = func(n nodes.Node) {
+	UpdateFunc = func(n arcadegame.Node) {
 		p, ok := n.Props().(*node2d.Node2DProps)
 		if !ok || !p.IsActive {
 			return
@@ -45,9 +44,9 @@ var (
 	}
 )
 
-func MakeBG(s arcadegame.Scene) *nodes.NodeBase {
-	n := nodes.MakeNodeBase(
-		s, nodes.LifecycleHooks{
+func MakeBG(s arcadegame.Scene) *arcadegame.NodeGeneric {
+	n := arcadegame.MakeNodeGeneric(
+		s, arcadegame.LifecycleHooks{
 			InitFunc:   &InitFunc,
 			DrawFunc:   &node2d.Node2DDrawFunc,
 			UpdateFunc: &UpdateFunc,
