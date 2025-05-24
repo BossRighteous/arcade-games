@@ -3,8 +3,6 @@ package nodes
 import (
 	"github.com/BossRighteous/arcade-games/pkg/arcadegame"
 	"github.com/BossRighteous/arcade-games/pkg/arcadegame/uniqueid"
-	"github.com/BossRighteous/arcade-games/pkg/arcadegame/vars"
-	"github.com/BossRighteous/arcade-games/pkg/arcadegame/vars/vm"
 	"github.com/hajimehoshi/ebiten/v2"
 )
 
@@ -26,7 +24,6 @@ type Node interface {
 	Delete()
 	Scene() arcadegame.Scene
 	Root() arcadegame.GameRoot
-	VM() vm.VM
-
-	vars.VarMappable
+	Hooks() *LifecycleHooks
+	Props() any //Should be pointer to struct
 }

@@ -6,8 +6,6 @@ import (
 	"github.com/BossRighteous/arcade-games/pkg/arcadegame"
 	"github.com/BossRighteous/arcade-games/pkg/arcadegame/nodes"
 	"github.com/BossRighteous/arcade-games/pkg/arcadegame/uniqueid"
-	"github.com/BossRighteous/arcade-games/pkg/arcadegame/vars"
-	"github.com/BossRighteous/arcade-games/pkg/arcadegame/vars/vm"
 	"github.com/BossRighteous/arcade-games/pkg/games/example/bgnode"
 	"github.com/hajimehoshi/ebiten/v2"
 	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
@@ -15,14 +13,12 @@ import (
 
 type SceneMain struct {
 	r    arcadegame.GameRoot
-	vm   *vars.VarMap
 	nMap map[uniqueid.UID]nodes.Node
 	f    uint64
 }
 
 func (s *SceneMain) Init(r arcadegame.GameRoot) {
 	s.r = r
-	s.vm = vars.NewVarMap()
 	s.nMap = make(map[uniqueid.UID]nodes.Node, 100)
 	s.f = 0
 }
@@ -55,20 +51,16 @@ func (s *SceneMain) Draw(sc *ebiten.Image) {
 	for _, n := range s.nMap {
 		n.Draw(sc)
 	}
-	ebitenutil.DebugPrint(sc, fmt.Sprintf("Nodes: %v", len(s.nMap)))
+
+	ebitenutil.DebugPrint(sc, fmt.Sprintf("Nodes: %v, TPS: %.2f, FPS: %.2f", len(s.nMap), ebiten.ActualTPS(), ebiten.ActualFPS()))
 }
 
 func (s *SceneMain) Exit() {
 	for _, n := range s.nMap {
 		n.Exit()
 	}
-	s.vm.ClearAll()
 }
 
 func (s *SceneMain) Root() arcadegame.GameRoot {
 	return s.r
-}
-
-func (s *SceneMain) VM() vm.VM {
-	return s.vm
 }

@@ -2,6 +2,7 @@ package arcadegame
 
 import (
 	"errors"
+	"fmt"
 	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -29,14 +30,25 @@ type SpriteInstance struct {
 	isPlaying bool
 }
 
+func MakeSpriteInstance(sp *Sprite) SpriteInstance {
+	return SpriteInstance{sp: sp}
+}
+
 func (spi *SpriteInstance) DrawFrame() (*ebiten.Image, error) {
-	anim := spi.currAnim
-	frame := spi.currFrame
-	if anim < 0 || anim >= len(spi.sp.Animations) || frame < 0 || frame >= len(spi.sp.Animations[anim].Frames) {
-		return nil, errors.New("error DrawFrame out of bounds")
+	if spi.sp == nil || spi.sp.Sheet == nil {
+		fmt.Println("Sprite error")
+		return nil, errors.New("Sprite Draw Error")
 	}
-	rect := spi.sp.Animations[anim].Frames[frame].SpriteSheetRect
-	return spi.sp.Sheet.SubImage(rect).(*ebiten.Image), nil
+	return spi.sp.Sheet, nil
+	/*
+		anim := spi.currAnim
+		frame := spi.currFrame
+		if anim < 0 || anim >= len(spi.sp.Animations) || frame < 0 || frame >= len(spi.sp.Animations[anim].Frames) {
+			return nil, errors.New("error DrawFrame out of bounds")
+		}
+		rect := spi.sp.Animations[anim].Frames[frame].SpriteSheetRect
+		return spi.sp.Sheet.SubImage(rect).(*ebiten.Image), nil
+	*/
 	// TODO: subimage
 }
 
