@@ -32,7 +32,7 @@ func (s *SceneMain) Enter() {
 	}
 }
 
-func (s *SceneMain) Update() {
+func (s *SceneMain) Update() error {
 	for _, n := range s.nMap {
 		n.Update()
 	}
@@ -43,6 +43,7 @@ func (s *SceneMain) Update() {
 		n.Enter()
 		s.nMap[n.ID()] = n
 	}
+	return nil
 }
 
 func (s *SceneMain) Draw(sc *ebiten.Image) {

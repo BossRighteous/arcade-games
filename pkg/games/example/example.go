@@ -28,15 +28,11 @@ func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeigh
 func (g *Game) Enter() {
 	s := &SceneMain{}
 	s.Init(g)
-	g.SetScene(s)
+	g.s = s
+	s.Enter()
 }
 
-func (g *Game) SetScene(ns arcadegame.Scene) {
-	if g.s != nil {
-		g.s.Exit()
-	}
-	g.s = ns
-	g.s.Enter()
+func (g *Game) SetScene(st arcadegame.SceneToken) {
 }
 
 func (g *Game) Exit() {
