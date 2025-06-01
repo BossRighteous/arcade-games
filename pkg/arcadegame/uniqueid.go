@@ -1,10 +1,14 @@
 package arcadegame
 
-type UID int
+type UID uint32
 
-var _uniqueId UID = -1
+var _uniqueId UID = 0
 
 func UniqueID() UID {
 	_uniqueId++
 	return _uniqueId
+}
+
+func ResetUniqueID() {
+	_uniqueId = 0
 }

@@ -1,8 +1,6 @@
 package arcadegame
 
 import (
-	"errors"
-	"fmt"
 	"image"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -30,53 +28,33 @@ type SpriteInstance struct {
 	isPlaying bool
 }
 
-func MakeSpriteInstance(sp *Sprite) SpriteInstance {
-	return SpriteInstance{sp: sp}
+type SpriteSheetToken = uint8
+type SpriteSheetFrameIndex = uint16 // Index of frame for naming
+type SpriteSheet struct {
+	Img       *ebiten.Image
+	Frames    []image.Rectangle
+	FrameImgs []*ebiten.Image
 }
 
-func (spi *SpriteInstance) DrawFrame() (*ebiten.Image, error) {
-	if spi.sp == nil || spi.sp.Sheet == nil {
-		fmt.Println("Sprite error")
-		return nil, errors.New("Sprite Draw Error")
+func (ss *SpriteSheet) Init(img *ebiten.Image) {
+	ss.Img = img
+	ss.FrameImgs = make([]*ebiten.Image, len(ss.Frames))
+	for fi, fr := range ss.Frames {
+		ss.FrameImgs[fi] = ss.Img.SubImage(fr).(*ebiten.Image)
 	}
-	return spi.sp.Sheet, nil
-	/*
-		anim := spi.currAnim
-		frame := spi.currFrame
-		if anim < 0 || anim >= len(spi.sp.Animations) || frame < 0 || frame >= len(spi.sp.Animations[anim].Frames) {
-			return nil, errors.New("error DrawFrame out of bounds")
+}
+
+func AllocateFrameRects(tw int, th int, rectW int, rectH int) []image.Rectangle {
+	rs := make([]image.Rectangle, (tw * th))
+	i := 0
+	for ty := range th {
+		for tx := range tw {
+			rs[i] = image.Rectangle{
+				Min: image.Point{X: tx * rectW, Y: ty * rectH},
+				Max: image.Point{X: (tx * rectW) + rectW, Y: (ty * rectH) + rectH},
+			}
+			i++
 		}
-		rect := spi.sp.Animations[anim].Frames[frame].SpriteSheetRect
-		return spi.sp.Sheet.SubImage(rect).(*ebiten.Image), nil
-	*/
-	// TODO: subimage
-}
-
-func (sp *SpriteInstance) Play() {
-	sp.isPlaying = true
-}
-
-func (sp *SpriteInstance) Stop() {
-	sp.isPlaying = false
-}
-
-func (sp *SpriteInstance) IsPlaying() bool {
-	return sp.isPlaying
-}
-
-func (spi *SpriteInstance) SetCurrentAnimationFrame(anim int, frame int, play bool) error {
-	if anim < 0 || anim >= len(spi.sp.Animations) || frame < 0 || frame >= len(spi.sp.Animations[anim].Frames) {
-		anim = 0
-		frame = 0
-		play = false
-		return errors.New("error SetCurrentAnimationFrame out of bounds")
 	}
-	spi.currAnim = anim
-	spi.currFrame = frame
-	spi.isPlaying = play
-	return nil
-}
-
-func (sp *SpriteInstance) GetCurrentAnimationFrame() (int, int, bool) {
-	return sp.currAnim, sp.currFrame, sp.isPlaying
+	return rs
 }

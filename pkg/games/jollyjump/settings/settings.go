@@ -3,10 +3,10 @@ package settings
 import "github.com/hajimehoshi/ebiten/v2"
 
 const (
-	Debug = false
+	Debug = true
 
-	ScreenWidth  = 480
-	ScreenHeight = 270
+	ScreenWidth  = 480 // 30 tiles
+	ScreenHeight = 256 // 16 tiles
 
 	WindowTitle  = "Jolly Jump"
 	WindowWidth  = 1920
